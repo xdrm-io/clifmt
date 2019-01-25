@@ -8,6 +8,8 @@ import (
 
 type terminalColor uint32
 
+// Theme is used to associate color names to integer color values ;
+// the color names in the theme are available in the colorizing format
 type Theme map[string]terminalColor
 
 var theme Theme = make(map[string]terminalColor)

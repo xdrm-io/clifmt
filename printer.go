@@ -30,8 +30,8 @@ func Sprintf(format string, a ...interface{}) (string, error) {
 		cursor = match[1]
 
 		// (2) extract features
+		var err error
 		var (
-			err         = error(nil)
 			text        = ""
 			sForeground = ""
 			sBackground = ""
@@ -76,6 +76,7 @@ func Sprintf(format string, a ...interface{}) (string, error) {
 	return output, nil
 }
 
+// Printf prints a terminal-colorized output following the coloring format
 func Printf(format string, a ...interface{}) error {
 	s, err := Sprintf(format, a...)
 	if err != nil {
