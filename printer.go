@@ -16,7 +16,8 @@ import (
 // - [Format] -> ${Text}(:Color)      # background color only
 var extractor = regexp.MustCompile(`(?m)\${([^$]+)}\(((?:[a-z]+|#(?:[0-9a-f]{3}|[0-9a-f]{6})))?(?:\:((?:[a-z]+|#(?:[0-9a-f]{3}|[0-9a-f]{6}))))?\)`)
 
-func Printf(format string, a ...interface{}) error {
+// Sprintf returns a terminal-colorized output following the coloring format
+func Sprintf(format string, a ...interface{}) (string, error) {
 	// 1. Pre-process format with 'fmt'
 	input := fmt.Sprintf(format, a...)
 	output := ""
@@ -45,14 +46,14 @@ func Printf(format string, a ...interface{}) error {
 			sForeground = input[match[4]:match[5]]
 			foreground, err = parseColor(sForeground)
 			if err != nil {
-				return err
+				return "", err
 			}
 		}
 		if match[7]-match[6] > 0 {
 			sBackground = input[match[6]:match[7]]
 			background, err = parseColor(sBackground)
 			if err != nil {
-				return err
+				return "", err
 			}
 		}
 
@@ -72,7 +73,16 @@ func Printf(format string, a ...interface{}) error {
 	}
 
 	// 3. print final output
-	fmt.Print(output)
+	return output, nil
+}
+
+func Printf(format string, a ...interface{}) error {
+	s, err := Sprintf(format, a...)
+	if err != nil {
+		return err
+	}
+
+	fmt.Print(s)
 	return nil
 }
 
