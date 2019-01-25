@@ -22,8 +22,18 @@ ${<target text>}(<fg>:<bg>)
 ```
 
 - `<target text>` is the text that will be colorized.
+
 - `<fg>` is the name of the foreground color (*c.f. [color list](https://git.xdrm.io/go/clifmt/src/master/colors.go#L15)*), or an hex color (*e.g.`#00ffaa`, `#0fa`*).
+
 - `<bg>` is the name of the background color with the same syntax as for the foreground.
+
+  
+
+###### Example
+
+```go
+clifmt.Printf("normal text ${red text over black}(red:#000) normal text")
+```
 
 > Note that it is not recommended to nest the different coloring formats.
 
@@ -40,6 +50,13 @@ ${<target text>}(<fg>)
 
 
 
+###### Example
+
+```go
+clifmt.Printf("normal text ${red text}(red) normal text")
+```
+
+
 ##### Background only
 
 ```go
@@ -50,6 +67,12 @@ ${<target text>}(:<bg>)
 - `<bg>` is the name of the background color.
 
 
+
+###### Example
+
+```go
+clifmt.Printf("normal text ${text over red}(#ff0000) normal text")
+```
 
 
 
