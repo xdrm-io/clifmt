@@ -7,7 +7,29 @@
 
 Simple utility written in `go` that extends the standard `fmt.Sprintf` and `fmt.Printf` functions. It allows you to set foreground/background color, **bold**, <u>underlined</u> and _italic_ text.
 
+<!-- toc -->
 
+- [(1) Format](#1-format)
+  - [[Colorization]](#colorization)
+      - [Base format](#base-format)
+        - [Example](#example)
+      - [Foreground only](#foreground-only)
+        - [Example](#example-1)
+      - [Background only](#background-only)
+        - [Example](#example-2)
+  - [[Markdown-like format]](#markdown-like-format)
+      - [Bold format](#bold-format)
+        - [Example](#example-3)
+      - [Italic format](#italic-format)
+        - [Example](#example-4)
+      - [Underline format](#underline-format)
+        - [Example](#example-5)
+- [(2) Screenshot](#2-screenshot)
+        - [Colorizing format example :](#colorizing-format-example-)
+        - [Markdown-like format example](#markdown-like-format-example)
+- [(3) Incoming features](#3-incoming-features)
+
+<!-- tocstop -->
 
 ----
 
@@ -15,7 +37,9 @@ Simple utility written in `go` that extends the standard `fmt.Sprintf` and `fmt.
 
 
 
-##### Base format
+### [Colorization]
+
+#### Base format
 
 ```go
 ${<target text>}(<fg>:<bg>)
@@ -27,7 +51,7 @@ ${<target text>}(<fg>:<bg>)
 
 - `<bg>` is the name of the background color with the same syntax as for the foreground.
 
-  
+
 
 ###### Example
 
@@ -39,7 +63,7 @@ clifmt.Printf("normal text ${red text over black}(red:#000) normal text")
 
 
 
-##### Foreground only
+#### Foreground only
 
 ```go
 ${<target text>}(<fg>)
@@ -57,7 +81,8 @@ clifmt.Printf("normal text ${red text}(red) normal text")
 ```
 
 
-##### Background only
+
+#### Background only
 
 ```go
 ${<target text>}(:<bg>)
@@ -76,11 +101,75 @@ clifmt.Printf("normal text ${text over red}(#ff0000) normal text")
 
 
 
+### [Markdown-like format]
+
+
+
+#### Bold format
+
+```go
+**<target text>**
+```
+
+- `<target text>` is the text that will be bold.
+
+###### Example
+
+```go
+clifmt.Printf("normal text **bold text** normal text")
+```
+
+
+
+#### Italic format
+
+```go
+*<target text>*
+```
+
+- `<target text>` is the text that will be italic.
+
+###### Example
+
+```go
+clifmt.Printf("normal text *italic text* normal text")
+```
+
+
+
+#### Underline format
+
+```go
+_<target text>_
+```
+
+- `<target text>` is the text that will be underlined.
+
+###### Example
+
+```go
+clifmt.Printf("normal text _underline text_ normal text")
+```
+
+
+
+
+
 ----
 
 ## (2) Screenshot
 
-![default screenshot](https://0x0.st/sCPc.png)
+
+
+###### Colorizing format example :
+
+![colorizing example](https://0x0.st/sCPc.png)
+
+
+
+###### Markdown-like format example
+
+![markdown-like example](https://0x0.st/sC9F.png)
 
 
 
@@ -88,7 +177,7 @@ clifmt.Printf("normal text ${text over red}(#ff0000) normal text")
 
 ## (3) Incoming features
 
-- [ ] **markdown-like formatting** - bold, italic, underlined, (strike-through?)
+- [x] **markdown-like formatting** - bold, italic, underlined, (strike-through?)
 - [ ] **global alignment** - align text dynamically
 - [ ] **progress-line** - redrawing format to show, for instance an animated progress bar on the same line
 
