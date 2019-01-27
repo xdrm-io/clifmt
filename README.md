@@ -11,23 +11,25 @@ Simple utility written in `go` that extends the standard `fmt.Sprintf` and `fmt.
 <!-- toc -->
 
 - [(1) Format](#1-format)
-  - [[Colorization]](#colorization)
-      - [Base format](#base-format)
-        - [Example](#example)
-      - [Foreground only](#foreground-only)
-        - [Example](#example-1)
-      - [Background only](#background-only)
-        - [Example](#example-2)
-  - [[Markdown-like format]](#markdown-like-format)
-      - [Bold format](#bold-format)
-        - [Example](#example-3)
-      - [Italic format](#italic-format)
-        - [Example](#example-4)
-      - [Underline format](#underline-format)
-        - [Example](#example-5)
+  * [[Colorization]](#colorization)
+    + [Base format](#base-format)
+        * [Example](#example)
+    + [Foreground only](#foreground-only)
+        * [Example](#example-1)
+    + [Background only](#background-only)
+        * [Example](#example-2)
+  * [[Markdown-like format]](#markdown-like-format)
+    + [Bold format](#bold-format)
+        * [Example](#example-3)
+    + [Italic format](#italic-format)
+        * [Example](#example-4)
+    + [Underline format](#underline-format)
+        * [Example](#example-5)
+    + [Hyperlink format](#hyperlink-format)
+        * [Example](#example-6)
 - [(2) Screenshot](#2-screenshot)
-        - [Colorizing format example :](#colorizing-format-example-)
-        - [Markdown-like format example](#markdown-like-format-example)
+        * [Colorizing format example :](#colorizing-format-example-)
+        * [Markdown-like format example](#markdown-like-format-example)
 - [(3) Incoming features](#3-incoming-features)
 
 <!-- tocstop -->
@@ -153,6 +155,23 @@ clifmt.Printf("normal text _underline text_ normal text")
 ```
 
 
+
+
+
+#### Hyperlink format
+
+```go
+[<target text>](<target url>)
+```
+
+- `<target text>` is the text that will be displayed.
+- `<target url>` is the url the hyperlink links to.
+
+###### Example
+
+```go
+clifmt.Printf("normal text [hyper](link) normal text")
+```
 
 
 
