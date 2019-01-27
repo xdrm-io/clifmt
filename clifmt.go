@@ -3,8 +3,12 @@ package clifmt
 import (
 	"fmt"
 	"git.xdrm.io/go/clifmt/internal/color"
-	colorTransform "git.xdrm.io/go/clifmt/internal/transform/color"
-	mdTransform "git.xdrm.io/go/clifmt/internal/transform/markdown"
+	tbold "git.xdrm.io/go/clifmt/internal/syntax/bold"
+	tcolor "git.xdrm.io/go/clifmt/internal/syntax/color"
+	thyperlink "git.xdrm.io/go/clifmt/internal/syntax/hyperlink"
+	titalic "git.xdrm.io/go/clifmt/internal/syntax/italic"
+	tunderline "git.xdrm.io/go/clifmt/internal/syntax/underline"
+	"git.xdrm.io/go/clifmt/internal/transform"
 	"strings"
 )
 
@@ -28,26 +32,27 @@ func Sprintf(format string, a ...interface{}) (string, error) {
 	formatted = strings.Replace(formatted, "\\_", underscoreToken, -1)
 	formatted = strings.Replace(formatted, "\\[", squareBracketToken, -1)
 
-	// 3. Colorize
-	colorized, err := colorTransform.Transform(formatted, theme)
-	if err != nil {
-		return "", err
-	}
+	// 3. create transformation registry
+	reg := transform.Registry{Transformers: make([]transform.Transformer, 0, 10)}
+	reg.Transformers = append(reg.Transformers, tcolor.Export)
+	reg.Transformers = append(reg.Transformers, tbold.Export)
+	reg.Transformers = append(reg.Transformers, titalic.Export)
+	reg.Transformers = append(reg.Transformers, tunderline.Export)
+	reg.Transformers = append(reg.Transformers, thyperlink.Export)
 
-	// 4. Markdown format
-	markdown, err := mdTransform.Transform(colorized)
+	transformed, err := reg.Transform(formatted)
 	if err != nil {
 		return "", err
 	}
 
 	// 5. Restore token-protected characters
-	markdown = strings.Replace(markdown, dollarToken, "$", -1)
-	markdown = strings.Replace(markdown, asteriskToken, "*", -1)
-	markdown = strings.Replace(markdown, underscoreToken, "_", -1)
-	markdown = strings.Replace(markdown, squareBracketToken, "[", -1)
+	transformed = strings.Replace(transformed, dollarToken, "$", -1)
+	transformed = strings.Replace(transformed, asteriskToken, "*", -1)
+	transformed = strings.Replace(transformed, underscoreToken, "_", -1)
+	transformed = strings.Replace(transformed, squareBracketToken, "[", -1)
 
 	// 6. return final output
-	return markdown, nil
+	return transformed, nil
 }
 
 // Printf prints a terminal-colorized output following the coloring format
