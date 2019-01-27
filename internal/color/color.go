@@ -6,6 +6,8 @@ import (
 	"strconv"
 )
 
+var ErrInvalidHexSize = fmt.Errorf("expect a size of 3 or 6 (without the '#' prefix)")
+
 // T represents a color
 type T uint32
 
@@ -24,7 +26,7 @@ func FromName(t Theme, s string) (T, error) {
 // the format is 'abc' or 'abcdef'
 func FromHex(s string) (T, error) {
 	if len(s) != 3 && len(s) != 6 {
-		return 0, fmt.Errorf("expect a size of 3 or 6 (without the '#' prefix)")
+		return 0, ErrInvalidHexSize
 	}
 
 	// short version
