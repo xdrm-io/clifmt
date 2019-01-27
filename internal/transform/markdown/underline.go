@@ -38,7 +38,7 @@ func underlineTransform(input string) (string, error) {
 	}
 
 	// 2. Add end of input
-	if cursor < len(input)-1 {
+	if cursor < len(input) {
 		output += input[cursor:]
 	}
 

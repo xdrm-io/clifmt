@@ -14,11 +14,17 @@ func Transform(input string) (string, error) {
 		return "", err
 	}
 
-	// 3. italic
+	// 3. underline
 	underline, err := underlineTransform(italic)
 	if err != nil {
 		return "", err
 	}
 
-	return underline, nil
+	// 4. hyperlink
+	hyperlinked, err := hyperlinkTransform(underline)
+	if err != nil {
+		return "", err
+	}
+
+	return hyperlinked, nil
 }
