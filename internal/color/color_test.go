@@ -1,6 +1,7 @@
 package color
 
 import (
+	"io"
 	"strconv"
 	"testing"
 )
@@ -161,6 +162,63 @@ func TestFromName(t *testing.T) {
 			if !test.Fail {
 				t.Errorf("[%d] unexpected error <%s>", i, err)
 			}
+			break
+		}
+
+		if color != test.Color {
+			t.Errorf("[%d] invalid color %x expected %x", i, color, test.Color)
+		}
+
+	}
+}
+
+func TestParse(t *testing.T) {
+	// fetch custom theme
+	theme := getTheme()
+
+	tests := []struct {
+		Name  string
+		err   error
+		Color T
+	}{
+		{"", io.ErrUnexpectedEOF, 0x0},
+		{"unknown color", &NameError{ErrUnknownColorName, "unknown color"}, 0x0},
+
+		{"white", nil, 0xffffff},
+		{"black", nil, 0x0},
+		{"red", nil, 0xff0000},
+		{"green", nil, 0x00ff00},
+		{"blue", nil, 0x0000ff},
+
+		{"#000", nil, 0x000000},
+		{"#000000", nil, 0x000000},
+
+		{"#f00", nil, 0xff0000},
+		{"#ff0000", nil, 0xff0000},
+
+		{"#0f0", nil, 0x00ff00},
+		{"#00ff00", nil, 0x00ff00},
+
+		{"#00f", nil, 0x0000ff},
+		{"#0000ff", nil, 0x0000ff},
+
+		{"#4cb5ae", nil, 0x4cb5ae},
+	}
+
+	for i, test := range tests {
+
+		color, err := Parse(theme, test.Name)
+		if err != nil {
+			if test.err == nil {
+				t.Errorf("[%d] unexpected error <%s>", i, err)
+			} else if err.Error() != test.err.Error() {
+				t.Errorf("[%d] got error <%s> expected <%s>", i, err, test.err)
+			}
+			break
+		}
+
+		if test.err != nil {
+			t.Errorf("[%d] expected error <%s>", i, test.err)
 			break
 		}
 

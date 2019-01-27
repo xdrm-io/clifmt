@@ -6,7 +6,15 @@ import (
 	"strconv"
 )
 
+type NameError struct {
+	Err  error
+	Name string
+}
+
+func (err *NameError) Error() string { return fmt.Sprintf("%s '%s'", err.Err, err.Name) }
+
 var ErrInvalidHexSize = fmt.Errorf("expect a size of 3 or 6 (without the '#' prefix)")
+var ErrUnknownColorName = fmt.Errorf("unknown color name")
 
 // T represents a color
 type T uint32
@@ -16,7 +24,7 @@ type T uint32
 func FromName(t Theme, s string) (T, error) {
 	value, ok := t[s]
 	if !ok {
-		return 0, fmt.Errorf("unknown color name '%s'", s)
+		return 0, &NameError{ErrUnknownColorName, s}
 	}
 	return value, nil
 }
