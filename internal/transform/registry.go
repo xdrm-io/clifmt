@@ -19,7 +19,7 @@ func (r *Registry) Transform(input string) (string, error) {
 	// execute each transformer by order
 	for _, t := range r.Transformers {
 
-		// 1. execute ; dispatch error on failure
+		// 1.  execute ; dispatch error on failure
 		out, err := execute(t, in)
 		if err != nil {
 			return "", err
