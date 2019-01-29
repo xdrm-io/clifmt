@@ -12,6 +12,8 @@ import (
 	"strings"
 )
 
+var ErrInvalidFormat = fmt.Errorf("invalid format")
+
 var theme = color.DefaultTheme()
 
 var (
@@ -25,6 +27,9 @@ var (
 func Sprintf(format string, a ...interface{}) (string, error) {
 	// 1. Pre-process format with 'fmt'
 	formatted := fmt.Sprintf(format, a...)
+	if strings.Contains(formatted, "%!") { // error
+		return "", ErrInvalidFormat
+	}
 
 	// 2. Protect escaped characters with tokens
 	formatted = strings.Replace(formatted, "\\$", dollarToken, -1)
