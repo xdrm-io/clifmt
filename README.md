@@ -10,174 +10,176 @@ Simple utility written in `go` that extends the standard `fmt.Sprintf` and `fmt.
 
 <!-- toc -->
 
-- [(1) Format](#1-format)
-  * [[Colorization]](#colorization)
-    + [Base format](#base-format)
-        * [Example](#example)
-    + [Foreground only](#foreground-only)
-        * [Example](#example-1)
-    + [Background only](#background-only)
-        * [Example](#example-2)
-  * [[Markdown-like format]](#markdown-like-format)
-    + [Bold format](#bold-format)
-        * [Example](#example-3)
-    + [Italic format](#italic-format)
-        * [Example](#example-4)
-    + [Underline format](#underline-format)
-        * [Example](#example-5)
-    + [Hyperlink format](#hyperlink-format)
-        * [Example](#example-6)
-- [(2) Screenshot](#2-screenshot)
+- [I. How to use](#i-how-to-use)
+  * [1) Requirements](#1-requirements)
+  * [2) Installation](#2-installation)
+  * [3) Usage](#3-usage)
+    + [a) As a library](#a-as-a-library)
+    + [b) As an executable](#b-as-an-executable)
+- [II. Format syntax](#ii-format-syntax)
+  * [1) Text style](#1-text-style)
+- [III. Animations](#iii-animations)
+- [IV. Screenshots](#iv-screenshots)
         * [Colorizing format example :](#colorizing-format-example-)
         * [Markdown-like format example](#markdown-like-format-example)
-- [(3) Incoming features](#3-incoming-features)
+- [V. Incoming features](#v-incoming-features)
 
 <!-- tocstop -->
 
 ----
+## I. How to use
 
-## (1) Format
+### 1) Requirements
+
+The package **clifmt** can be used as a `go` library or as an executable. In either case, you need :
+
+- any recent linux system (_has not been tested over other OSes_)
+- `go` installed (_has not been tested under version **1.11**_)
 
 
 
-### [Colorization]
+### 2) Installation
 
-#### Base format
+Simply launch the following command in your favorite terminal
 
-```go
-${<target text>}(<fg>:<bg>)
+```bash
+$ go get -u git.xdrm.io/go/clifmt
 ```
 
-- `<target text>` is the text that will be colorized.
-
-- `<fg>` is the name of the foreground color (*c.f. [color list](https://git.xdrm.io/go/clifmt/src/master/colors.go#L15)*), or an hex color (*e.g.`#00ffaa`, `#0fa`*).
-
-- `<bg>` is the name of the background color with the same syntax as for the foreground.
+> It will download the project sources into _`$GOPATH`/src/git.xdrm.io/go/clifmt_.
 
 
 
-###### Example
+### 3) Usage
 
-```go
-clifmt.Printf("normal text ${red text over black}(red:#000) normal text")
-```
+#### a) As a library
 
-> Note that it is not recommended to nest the different coloring formats.
-
-
-
-#### Foreground only
+You must import the library into your program with
 
 ```go
-${<target text>}(<fg>)
-```
-
-- `<target text>` is the text that will be colorized.
-- `<fg>` is the name of the foreground color.
-
-
-
-###### Example
-
-```go
-clifmt.Printf("normal text ${red text}(red) normal text")
+import "git.xdrm.io/go/clifmt"
 ```
 
 
 
-#### Background only
+Then, the following methods will be available
 
 ```go
-${<target text>}(:<bg>)
+// Printf wraps the standard fmt.Printf() features but adds formatting capabilities
+func Printf(fmt string, args ...interface{}) error
 ```
 
-- `<target text>` is the text that will be colorized.
-- `<bg>` is the name of the background color.
-
-
-
-###### Example
-
 ```go
-clifmt.Printf("normal text ${text over red}(#ff0000) normal text")
+// Sprintf acts as 'Printf' but returns the string instead of printing it
+func Sprintf(fmt string, args ...interface{}) (string, error)
 ```
 
-
-
-### [Markdown-like format]
-
-
-
-#### Bold format
-
 ```go
-**<target text>**
-```
-
-- `<target text>` is the text that will be bold.
-
-###### Example
-
-```go
-clifmt.Printf("normal text **bold text** normal text")
+// Printpf acts as 'Printf' but takes as arguments either standard fmt.Printf arguments, or channels that will update the output when provided with correct values.
+func Printpf(fmt string, args ...interface{}) (error)
 ```
 
 
 
-#### Italic format
+#### b) As an executable
 
-```go
-*<target text>*
+You must run from your terminal
+
+```bash
+$ go get -u git.xdrm.io/go/clifmt/cmd/clifmt
 ```
-
-- `<target text>` is the text that will be italic.
-
-###### Example
-
-```go
-clifmt.Printf("normal text *italic text* normal text")
-```
-
-
-
-#### Underline format
-
-```go
-_<target text>_
-```
-
-- `<target text>` is the text that will be underlined.
-
-###### Example
-
-```go
-clifmt.Printf("normal text _underline text_ normal text")
-```
-
-
-
-
-
-#### Hyperlink format
-
-```go
-[<target text>](<target url>)
-```
-
-- `<target text>` is the text that will be displayed.
-- `<target url>` is the url the hyperlink links to.
-
-###### Example
-
-```go
-clifmt.Printf("normal text [hyper](link) normal text")
-```
+The  `clifmt` executable will be available in your $GOBIN directory.
 
 
 
 ----
 
-## (2) Screenshot
+## II. Format syntax
+
+
+
+### 1) Text style
+
+
+
+The format has been designed with the markdown syntax in mind, but has some differences due to implementation issues and for stability.
+
+
+
+The format is better described by the sample below than explanations :
+
+```go
+// markdown-like
+Printf("some normal text")
+Printf("**some bold text**")
+Printf("*some italic text*")
+Printf("_some underline text_")
+Printf("[link label](http://link_url)")
+
+// colors
+Printf("${red text}(red)")
+Printf("${red text over blue background}(red:blue)")
+Printf("${blue background text}(:blue)")
+```
+
+The code below will print the following result :
+
+![definition example result](https://0x0.st/zrtE.png)
+
+<u>**Note**</u>: Color names (_e.g. **red**, **blue**_) can be replaced by their hexadecimal representation (_e.g. **#ff0000**, **#0000ff**_) or the short version (_e.g. **#f00**, **#00f**_).
+
+----
+
+## III. Animations
+
+The **Printpf**  method allows you to pass [channels](https://tour.golang.org/concurrency/2) among ordinary arguments. It allows you to animate the text you want to print each time you send data on a channel argument.
+
+
+
+The example below shows a simple progress bar using markdown-like syntax, colors and animations :
+
+```go
+package main
+
+import (
+	"git.xdrm.io/go/clifmt"
+	"time"
+)
+
+func main() {
+    // (1) animated values
+	var (
+		status   = make(chan interface{})
+		color    = make(chan interface{})
+		progress = make(chan interface{})
+	)
+
+    // (2) print your animated values
+	go clifmt.Printpf("[${%s}(%s)] **%d**%%", status, color, progress)
+
+    // (3) animate values
+	status <- "download"
+	color <- "red"
+	for i := 0; i < 100; i++ {
+		progress <- i
+		time.Sleep(time.Millisecond * 200)
+	}
+	status <- "done"
+	color <- "green"
+}
+```
+
+The result is the following :
+
+![animation result](https://cloud.xdrm.io/s/go_clifmt_anim_result)
+
+
+
+
+
+----
+
+## IV. Screenshots
 
 
 
@@ -195,9 +197,9 @@ clifmt.Printf("normal text [hyper](link) normal text")
 
 ----
 
-## (3) Incoming features
+## V. Incoming features
 
 - [x] **markdown-like formatting** - bold, italic, underlined, (strike-through?)
 - [ ] **global alignment** - align text dynamically
-- [ ] **progress-line** - redrawing format to show, for instance an animated progress bar on the same line
+- [x] **progress-line** - redrawing format to show, for instance an animated progress bar on the same line
 
