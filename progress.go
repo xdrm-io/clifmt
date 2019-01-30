@@ -2,79 +2,74 @@ package clifmt
 
 import (
 	"fmt"
+	"math"
 	"reflect"
 	"strings"
 )
 
-var ErrNoNewline = fmt.Errorf("no newline allowed in progress mode")
-
-// Printpf prints a progress (dynamic) line that rewrites itself
-// on arguments' update
+// Printpf prints with possible updatable values.
+// Arguments can be interface{} (standard fmt.Printf)
+// or can be channels (chan interface{}) that will make the
+// output update on channel reception.
+//
+// You SHOULD launch it in a goroutine i.e. go clifmt.Printpf()
+// in order for the select{} to work
+//
+// It can work with multiple lines thanks to ANSI escape sequences
+// that allows to rewrite previously written lines
 func Printpf(format string, args ...interface{}) error {
 
-	// 1. check format
-	if strings.ContainsAny(format, "\n\r") {
-		return ErrNoNewline
-	}
+	// 1. init
+	values := make([]interface{}, len(args), len(args)) // actual values
+	channels := make([]chan interface{}, 0, len(args))  // channels that update values
+	indexes := make([]int, 0, len(args))                // association [channel order -> index in @fixed]
 
-	// 2. init
-	fixed := make([]interface{}, len(args), len(args)) // actual values
-	update := make([]chan interface{}, 0, len(args))   // channels that update values
-	updateIndex := make([]int, 0, len(args))           // association [order -> index in @fixed]
-
-	// 3. manage fixed values vs. updatable values (channels)
+	// 2. manage values vs. channels
 	for i, arg := range args {
 
 		// channel -> keep Zero value + store channel
 		if reflect.TypeOf(arg).Kind() == reflect.Chan {
-			updateIndex = append(updateIndex, i)
-			update = append(update, arg.(chan interface{}))
+			indexes = append(indexes, i)
+			channels = append(channels, arg.(chan interface{}))
 			continue
 		}
 
 		// raw -> set value
-		fixed[i] = arg
+		values[i] = arg
 	}
 
-	// 4. launch dynamic select for each channel
-	maxlen := 0
-	nselect(update, func(i int, value interface{}, ok bool) {
+	// 3. launch dynamic select for each channel
+	var rows int = -1
+	nselect(channels, func(i int, value interface{}, ok bool) {
 
-		// channel is closed -> do nothing
+		// (1) channel is closed -> do nothing
 		if !ok {
 			return
 		}
 
-		// extract real index
-		index := updateIndex[i]
+		// (2) update value
+		index := indexes[i]
+		values[index] = value
 
-		// update value
-		fixed[index] = value
-
-		// ignore on errors (updatable values still NIL)
-		str, err := Sprintf(format, fixed...)
+		// (3) don't print on error (values still NIL)
+		str, err := Sprintf(format, values...)
 		if err != nil {
 			return
 		}
-		reallen := displaySize(str)
 
-		// print string
-		fmt.Printf("\r%s", str)
-
-		// pad right to end of max size
-		if reallen < maxlen {
-			pad := make([]byte, 0, maxlen-reallen)
-			for i := reallen; i < maxlen; i++ {
-				pad = append(pad, ' ')
-			}
-			fmt.Printf("%s", pad)
-		} else {
-			maxlen = reallen
+		// (4) rewind N lines (written previous time)
+		if rows >= 0 {
+			fmt.Printf("\x1b[%dF\x1b[K", rows)
 		}
+		rows = int(math.Max(float64(strings.Count(str, "\n")), 1))
+
+		// (5) make each line rewrite previous line
+		str = strings.Replace(str, "\n", "\n\x1b[K", 11)
+
+		// (6) print string
+		fmt.Printf("%s", str)
 
 	})
-
-	fmt.Printf("\n")
 
 	return nil
 
