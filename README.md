@@ -171,7 +171,7 @@ func main() {
 
 The result is the following :
 
-![animation result](https://cloud.xdrm.io/s/go_clifmt_anim_result)
+![animation result](https://cloud.xdrm.io/s/go_clifmt_anim_result/download)
 
 
 
