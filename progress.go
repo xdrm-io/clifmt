@@ -2,7 +2,6 @@ package clifmt
 
 import (
 	"fmt"
-	"math"
 	"reflect"
 	"strings"
 )
@@ -58,10 +57,12 @@ func Printpf(format string, args ...interface{}) error {
 		}
 
 		// (4) rewind N lines (written previous time)
-		if rows >= 0 {
+		if rows > 0 {
 			fmt.Printf("\x1b[%dF\x1b[K", rows)
+		} else {
+			fmt.Printf("\r\x1b[K")
 		}
-		rows = int(math.Max(float64(strings.Count(str, "\n")), 1))
+		rows = strings.Count(str, "\n")
 
 		// (5) make each line rewrite previous line
 		str = strings.Replace(str, "\n", "\n\x1b[K", 11)
