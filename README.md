@@ -126,7 +126,9 @@ The code below will print the following result :
 
 ![definition example result](https://0x0.st/zrtE.png)
 
-<u>**Note**</u>: Color names (_e.g. **red**, **blue**_) can be replaced by their hexadecimal representation (_e.g. **#ff0000**, **#0000ff**_) or the short version (_e.g. **#f00**, **#00f**_).
+> Any syntax feature (_e.g. bold, color, hyperlink, ..._) can be included in any other. In the same way any syntax feature can be interlaced (_e.g. "startA startB stopA stopB"_) with each other.
+
+> Color names (_e.g. **red**, **blue**_) can be replaced by their hexadecimal representation (_e.g. **#ff0000**, **#0000ff**_) or the short version (_e.g. **#f00**, **#00f**_).
 
 ----
 
