@@ -10,12 +10,12 @@ type export string
 var Export = export("hyperlink")
 
 func (syn export) Regex() *regexp.Regexp {
-	return regexp.MustCompile(`(?m)([^\033])\[([^(?:\]()]+)\]\(([^\)]+)\)`)
+	return regexp.MustCompile(`(?m)(^|[^\x1b])\[([^(?:\]()]+)\]\(([^\)]+)\)`)
 }
 
 func (syn export) Transform(args ...string) (string, error) {
 	// no arg, empty -> ignore
-	if len(args) < 2 || len(args[0]) < 1 {
+	if len(args) < 2 || len(args[1]) < 1 {
 		return "", nil
 	}
 
