@@ -10,7 +10,7 @@ type export string
 var Export = export("hyperlink")
 
 func (syn export) Regex() *regexp.Regexp {
-	return regexp.MustCompile(`(?m)\[([^\[]+)\]\(([^\)]+)\)`)
+	return regexp.MustCompile(`(?m)([^\033])\[([^(?:\]()]+)\]\(([^\)]+)\)`)
 }
 
 func (syn export) Transform(args ...string) (string, error) {
@@ -19,5 +19,8 @@ func (syn export) Transform(args ...string) (string, error) {
 		return "", nil
 	}
 
-	return fmt.Sprintf("\x1b]8;;%s\x1b\\%s\x1b]8;;\x1b\\", args[1], args[0]), nil
+	linkstart := fmt.Sprintf("\x1b]8;;%s\x1b\\", args[2])
+	linkend := fmt.Sprintf("\x1b]8;;\x1b\\")
+
+	return fmt.Sprintf("%s%s%s%s", args[0], linkstart, args[1], linkend), nil
 }
