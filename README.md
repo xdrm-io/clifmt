@@ -202,6 +202,7 @@ The result is the following :
 ## V. Incoming features
 
 - [x] **markdown-like formatting** - bold, italic, underlined, (strike-through?)
+- [ ] **command-line executable** - align text from terminal
 - [ ] **global alignment** - align text dynamically
 - [x] **progress-line** - redrawing format to show, for instance an animated progress bar on the same line
 
