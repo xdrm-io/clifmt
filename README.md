@@ -6,7 +6,7 @@
 [![buddy branch](https://app.buddy.works/xdrmbracketsdev/clifmt/repository/branch/master/badge.svg?token=33f90a953be299fc439c760e2eab36c708f8ea1f87f1159dd77924589b364b2d "buddy branch")](https://app.buddy.works/xdrmbracketsdev/clifmt/repository/branch/master)
 
 
-Simple utility written in `go` that extends the standard `fmt.Sprintf` and `fmt.Printf` functions. It allows you to set foreground/background color, **bold**, <u>underlined</u> and _italic_ text.
+Simple utility written in `go` that extends the standard `fmt.Sprintf` and `fmt.Printf` functions. It allows you to set foreground/background color, **bold**, <u>underlined</u>, _italic_ text and [hyperlinks](some-url).
 
 <!-- toc -->
 
@@ -20,8 +20,8 @@ Simple utility written in `go` that extends the standard `fmt.Sprintf` and `fmt.
   * [1) Text style](#1-text-style)
 - [III. Animations](#iii-animations)
 - [IV. Screenshots](#iv-screenshots)
-        * [Colorizing format example :](#colorizing-format-example-)
-        * [Markdown-like format example](#markdown-like-format-example)
+    * [Colorizing format example :](#colorizing-format-example-)
+    * [Markdown-like format example](#markdown-like-format-example)
 - [V. Incoming features](#v-incoming-features)
 
 <!-- tocstop -->
@@ -90,6 +90,7 @@ $ go get -u git.xdrm.io/go/clifmt/cmd/clifmt
 ```
 The  `clifmt` executable will be available in your $GOBIN directory.
 
+> WARNING: The executable tool is a Work In Progress, it is not stable for now. You can use `clifmt --help` anyway to see details on the format, coloring, etc.
 
 
 ----
@@ -127,6 +128,8 @@ The code below will print the following result :
 ![definition example result](https://0x0.st/zrtE.png)
 
 > Any syntax feature (_e.g. bold, color, hyperlink, ..._) can be included in any other. In the same way any syntax feature can be interlaced (_e.g. "startA startB stopA stopB"_) with each other.
+
+> Note that there can be some issues with interlaced hyperlinks as it is supported as other syntax features. But it works perfectly when used alone.
 
 > Color names (_e.g. **red**, **blue**_) can be replaced by their hexadecimal representation (_e.g. **#ff0000**, **#0000ff**_) or the short version (_e.g. **#f00**, **#00f**_).
 
