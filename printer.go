@@ -76,7 +76,7 @@ func Printf(format string, a ...interface{}) error {
 	return nil
 }
 
-var escapeSequence = regexp.MustCompile(`\x1b\[\d+m`)
+var escapeSequence = regexp.MustCompile(`\x1b(?:\[|\]8;;)[^\\m]+[\\m]`)
 
 // Escape remove escape sequences when terminal formatting/colors is not wanted
 func Escape(format string) string {
