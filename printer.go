@@ -2,12 +2,17 @@ package clifmt
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/xdrm-io/clifmt/internal/color"
 	"github.com/xdrm-io/clifmt/internal/syntax"
 	"github.com/xdrm-io/clifmt/internal/transform"
 )
+
+// Support can be set to false when the terminal does not support vt100 colors
+// and formatting
+var Support = true
 
 // Theme is used to determine colors from their names ; feel free to replace it
 // with yours
@@ -52,6 +57,11 @@ func Sprintf(format string, a ...interface{}) (string, error) {
 	transformed = strings.Replace(transformed, asteriskToken, "*", -1)
 	transformed = strings.Replace(transformed, underscoreToken, "_", -1)
 	transformed = strings.Replace(transformed, squareBracketToken, "[", -1)
+
+	if !Support {
+		transformed = Escape(transformed)
+	}
+
 	return transformed, nil
 }
 
