@@ -21,8 +21,6 @@ Simple utility written in `go` that extends the standard `fmt.Sprintf` and `fmt.
 		- [1) Text style](#1-text-style)
 	- [III. Animations](#iii-animations)
 	- [IV. Screenshots](#iv-screenshots)
-					- [Colorizing format example :](#colorizing-format-example-)
-					- [Markdown-like format example](#markdown-like-format-example)
 	- [V. Incoming features](#v-incoming-features)
 
 <!-- tocstop -->
@@ -126,7 +124,7 @@ Printf("${blue background text}(:blue)")
 
 The code below will print the following result :
 
-![definition example result](https://0x0.st/zrtE.png)
+![definition example result](./README.assets/example_1.png)
 
 > Any syntax feature (_e.g. bold, color, hyperlink, ..._) can be included in any other. In the same way any syntax feature can be interlaced (_e.g. "startA startB stopA stopB"_) with each other.
 
@@ -153,23 +151,24 @@ import (
 )
 
 func main() {
-    // (1) animated values
+    // animated values
 	var (
 		status   = make(chan interface{})
 		color    = make(chan interface{})
 		progress = make(chan interface{})
 	)
 
-    // (2) print your animated values
+    // print your animated values
 	go clifmt.Printpf("[${%s}(%s)] **%d**%%", status, color, progress)
 
-    // (3) animate values
+    // animate values
 	status <- "download"
 	color <- "red"
 	for i := 0; i < 100; i++ {
 		progress <- i
 		time.Sleep(time.Millisecond * 200)
 	}
+	progress <- 100
 	status <- "done"
 	color <- "green"
 }
@@ -177,9 +176,7 @@ func main() {
 
 The result is the following :
 
-![animation result](https://cloud.xdrm.io/s/go_clifmt_anim_result/download)
-
-
+![animation result](./README.assets/progress_1.gif)
 
 
 
@@ -187,18 +184,9 @@ The result is the following :
 
 ## IV. Screenshots
 
+The -h flag returns a good example of what is possible.
 
-
-###### Colorizing format example :
-
-![colorizing example](https://0x0.st/sCPc.png)
-
-
-
-###### Markdown-like format example
-
-![markdown-like example](https://0x0.st/sC9F.png)
-
+![help example](README.assets/help.png)
 
 
 ----
