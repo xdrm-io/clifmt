@@ -4,7 +4,7 @@ package color
 // the color names in the theme are available in the colorizing format
 type Theme map[string]T
 
-// Default loads sets the default theme associations
+// DefaultTheme sets the default theme associations
 func DefaultTheme() Theme {
 	theme := make(Theme)
 	theme["black"] = 0x000000

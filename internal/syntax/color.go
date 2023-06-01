@@ -1,23 +1,24 @@
-package color
+package syntax
 
 import (
 	"fmt"
-	"git.xdrm.io/go/clifmt/internal/color"
 	"regexp"
+
+	"github.com/xdrm-io/clifmt/internal/color"
 )
 
-var theme = color.DefaultTheme()
+// Color implements transform.Transformer for the color syntax. It wraps its
+// color theme
+type Color color.Theme
 
-type export string
-
-var Export = export("color")
-
-func (syn export) Regex() *regexp.Regexp {
+// Regex implements transform.Transformer
+func (Color) Regex() *regexp.Regexp {
 	return regexp.MustCompile(`(?m)\${([^$]+)}\(((?:[a-z]+|#(?:[0-9a-f]{3}|[0-9a-f]{6})))?(?:\:((?:[a-z]+|#(?:[0-9a-f]{3}|[0-9a-f]{6}))))?\)`)
 }
 
-func (syn export) Transform(args ...string) (string, error) {
-	// no arg, no color -> error
+// Transform implements transform.Transformer
+func (c Color) Transform(args ...string) (string, error) {
+	// ignore no arg or empty
 	if len(args) < 3 {
 		return "", fmt.Errorf("invalid format")
 	}
@@ -29,14 +30,14 @@ func (syn export) Transform(args ...string) (string, error) {
 	)
 
 	if len(args[1]) > 0 {
-		tmp, err := color.Parse(theme, args[1])
+		tmp, err := color.Parse(color.Theme(c), args[1])
 		if err != nil {
 			return "", err
 		}
 		fg = &tmp
 	}
 	if len(args[2]) > 0 {
-		tmp, err := color.Parse(theme, args[2])
+		tmp, err := color.Parse(color.Theme(c), args[2])
 		if err != nil {
 			return "", err
 		}

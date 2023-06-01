@@ -1,20 +1,21 @@
-package hyperlink
+package syntax
 
 import (
 	"fmt"
 	"regexp"
 )
 
-type export string
+// Hyperlink implements transform.Transformer for the hyperlink syntax
+type Hyperlink struct{}
 
-var Export = export("hyperlink")
-
-func (syn export) Regex() *regexp.Regexp {
+// Regex implements transform.Transformer
+func (Hyperlink) Regex() *regexp.Regexp {
 	return regexp.MustCompile(`(?m)(^|[^\x1b])\[([^(?:\]()]+)\]\(([^\)]+)\)`)
 }
 
-func (syn export) Transform(args ...string) (string, error) {
-	// no arg, empty -> ignore
+// Transform implements transform.Transformer
+func (Hyperlink) Transform(args ...string) (string, error) {
+	// ignore no arg or empty
 	if len(args) < 2 || len(args[1]) < 1 {
 		return "", nil
 	}

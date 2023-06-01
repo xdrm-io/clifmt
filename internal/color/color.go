@@ -6,15 +6,21 @@ import (
 	"strconv"
 )
 
+// NameError raised when a color name or hexa is invalid
 type NameError struct {
 	Err  error
 	Name string
 }
 
-func (err *NameError) Error() string { return fmt.Sprintf("%s '%s'", err.Err, err.Name) }
+func (err *NameError) Error() string {
+	return fmt.Sprintf("%s '%s'", err.Err, err.Name)
+}
 
-var ErrInvalidHexSize = fmt.Errorf("expect a size of 3 or 6 (without the '#' prefix)")
-var ErrUnknownColorName = fmt.Errorf("unknown color name")
+// NameError errors
+var (
+	ErrInvalidHexSize   = fmt.Errorf("expect a size of 3 or 6 (without the '#' prefix)")
+	ErrUnknownColorName = fmt.Errorf("unknown color name")
+)
 
 // T represents a color
 type T uint32
@@ -53,20 +59,13 @@ func FromHex(s string) (T, error) {
 
 // Parse tries to parse a color string (can be a name or an hexa value)
 func Parse(t Theme, s string) (T, error) {
-
-	// (0) ...
 	if len(s) < 1 {
 		return 0, io.ErrUnexpectedEOF
 	}
-
-	// (1) hexa
 	if s[0] == '#' {
 		return FromHex(s[1:])
 	}
-
-	// (2) name
 	return FromName(t, s)
-
 }
 
 // Red component of the color
