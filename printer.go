@@ -5,18 +5,13 @@ import (
 	"strings"
 
 	"github.com/xdrm-io/clifmt/internal/color"
-	tbold "github.com/xdrm-io/clifmt/internal/syntax/bold"
-	tcolor "github.com/xdrm-io/clifmt/internal/syntax/color"
-	thyperlink "github.com/xdrm-io/clifmt/internal/syntax/hyperlink"
-	titalic "github.com/xdrm-io/clifmt/internal/syntax/italic"
-	tunderline "github.com/xdrm-io/clifmt/internal/syntax/underline"
+	"github.com/xdrm-io/clifmt/internal/syntax"
 	"github.com/xdrm-io/clifmt/internal/transform"
 )
 
-// ErrInvalidFormat raised when the format is invalid
-var ErrInvalidFormat = fmt.Errorf("invalid format")
-
-var theme = color.DefaultTheme()
+// Theme is used to determine colors from their names ; feel free to replace it
+// with yours
+var Theme = color.DefaultTheme()
 
 var (
 	dollarToken        = `e4d097183ab04e49f25cb7b0956fb9eb25b90c0316a32cb5afcbcdd9a669`
@@ -30,7 +25,7 @@ func Sprintf(format string, a ...interface{}) (string, error) {
 	// Pre-process format with 'fmt'
 	formatted := fmt.Sprintf(format, a...)
 	if strings.Contains(formatted, "%!") { // error
-		return "", ErrInvalidFormat
+		return "", fmt.Errorf("invalid format")
 	}
 
 	// protect escaped characters with tokens
@@ -41,11 +36,11 @@ func Sprintf(format string, a ...interface{}) (string, error) {
 
 	// create transformation registry
 	reg := transform.Registry{Transformers: make([]transform.Transformer, 0, 10)}
-	reg.Transformers = append(reg.Transformers, tcolor.Export)
-	reg.Transformers = append(reg.Transformers, tbold.Export)
-	reg.Transformers = append(reg.Transformers, titalic.Export)
-	reg.Transformers = append(reg.Transformers, tunderline.Export)
-	reg.Transformers = append(reg.Transformers, thyperlink.Export)
+	reg.Transformers = append(reg.Transformers, syntax.Color(Theme))
+	reg.Transformers = append(reg.Transformers, syntax.Bold{})
+	reg.Transformers = append(reg.Transformers, syntax.Italic{})
+	reg.Transformers = append(reg.Transformers, syntax.Underline{})
+	reg.Transformers = append(reg.Transformers, syntax.Hyperlink{})
 
 	transformed, err := reg.Transform(formatted)
 	if err != nil {
@@ -57,7 +52,6 @@ func Sprintf(format string, a ...interface{}) (string, error) {
 	transformed = strings.Replace(transformed, asteriskToken, "*", -1)
 	transformed = strings.Replace(transformed, underscoreToken, "_", -1)
 	transformed = strings.Replace(transformed, squareBracketToken, "[", -1)
-
 	return transformed, nil
 }
 
