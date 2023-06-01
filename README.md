@@ -3,7 +3,7 @@
 [![Go version](https://img.shields.io/badge/go_version-1.20-blue.svg)](https://golang.org/doc/go1.20)
 [![Go Report Card](https://goreportcard.com/badge/github.com/xdrm-io/clifmt)](https://goreportcard.com/report/github.com/xdrm-io/clifmt)
 [![Go doc](https://godoc.org/github.com/xdrm-io/clifmt?status.svg)](https://godoc.org/github.com/xdrm-io/clifmt)
-[![Build Status](https://drone.xdrm.io/api/badges/go/clifmt/status.svg)](https://drone.xdrm.io/go/clifmt)
+[![Build status](https://github.com/xdrm-io/clifmt/actions/workflows/go.yml/badge.svg)](https://github.com/xdrm-io/clifmt/actions/workflows/go.yml)
 
 
 Simple utility written in `go` that extends the standard `fmt.Sprintf` and `fmt.Printf` functions. It allows you to set foreground/background color, **bold**, <u>underlined</u>, _italic_ text and [hyperlinks](some-url).
