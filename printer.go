@@ -2,6 +2,8 @@ package clifmt
 
 import (
 	"fmt"
+	"io"
+	"os"
 	"regexp"
 	"strings"
 
@@ -25,13 +27,9 @@ var (
 	squareBracketToken = `51b06edd58f36003844941916cd3b313979fece55824d89ba02af052a229`
 )
 
-// Sprintf returns a terminal-colorized output following the coloring format
-func Sprintf(format string, a ...interface{}) (string, error) {
-	// Pre-process format with 'fmt'
-	formatted := fmt.Sprintf(format, a...)
-	if strings.Contains(formatted, "%!") { // error
-		return "", fmt.Errorf("invalid format")
-	}
+// print formats a markdown-like syntax to the terminal-formatted output
+func print(in string) (string, error) {
+	formatted := in
 
 	// protect escaped characters with tokens
 	formatted = strings.Replace(formatted, "\\$", dollarToken, -1)
@@ -65,15 +63,29 @@ func Sprintf(format string, a ...interface{}) (string, error) {
 	return transformed, nil
 }
 
-// Printf prints a terminal-colorized output following the coloring format
-func Printf(format string, a ...interface{}) error {
-	s, err := Sprintf(format, a...)
-	if err != nil {
-		return err
+// Sprintf mimics fmt.Sprintf with color formatting
+func Sprintf(format string, a ...interface{}) string {
+	// pre-process format with 'fmt'
+	preformatted := fmt.Sprintf(format, a...)
+	if strings.Contains(preformatted, "%!") { // fmt error
+		return preformatted
 	}
 
-	fmt.Print(s)
-	return nil
+	formatted, err := print(preformatted)
+	if err != nil {
+		return fmt.Sprintf("%%!{clifmt: %s}", err)
+	}
+	return formatted
+}
+
+// Fprintf mimics fmt.Sprintf with color formatting
+func Fprintf(w io.Writer, format string, a ...interface{}) (int, error) {
+	return fmt.Fprint(w, Sprintf(format, a...))
+}
+
+// Printf mimics fmt.Sprintf with color formatting
+func Printf(format string, a ...interface{}) (int, error) {
+	return Fprintf(os.Stdout, format, a...)
 }
 
 var escapeSequence = regexp.MustCompile(`\x1b(?:\[|\]8;;)[^\\m]+[\\m]`)

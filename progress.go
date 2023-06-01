@@ -47,10 +47,7 @@ func Printpf(format string, args ...interface{}) error {
 		values[index] = value
 
 		// don't print on error (values still NIL)
-		str, err := Sprintf(format, values...)
-		if err != nil {
-			return
-		}
+		str := Sprintf(format, values...)
 
 		// rewind N lines (written previous time)
 		if rows > 0 {

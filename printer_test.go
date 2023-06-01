@@ -72,12 +72,7 @@ func TestColoring(t *testing.T) {
 		}}
 
 	for i, test := range tests {
-		output, err := Sprintf(test.Input)
-		if err != nil {
-			t.Errorf("[%d] unexpected error <%v>", i, err)
-			break
-		}
-
+		output := Sprintf(test.Input)
 		if output != test.Output {
 			t.Errorf("[%d] expected '%s', got '%s'", i, test.Output, output)
 		}
@@ -147,11 +142,7 @@ func TestMarkdown(t *testing.T) {
 	}
 
 	for i, test := range tests {
-		output, err := Sprintf(test.Input)
-		if err != nil {
-			t.Errorf("[%d] unexpected error <%v>", i, err)
-			break
-		}
+		output := Sprintf(test.Input)
 
 		if output != test.Output {
 			t.Errorf("[%d] expected '%s'\n", i, strings.Replace(strings.Replace(test.Output, "\n", "\\n", -1), "\x1b", "\\e", -1))
