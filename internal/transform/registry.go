@@ -18,14 +18,12 @@ func (r *Registry) Transform(input string) (string, error) {
 
 	// execute each transformer by order
 	for _, t := range r.Transformers {
-
-		// 1.  execute ; dispatch error on failure
 		out, err := execute(t, in)
 		if err != nil {
 			return "", err
 		}
 
-		// 2. replace next input with current output
+		// replace next input with current output
 		in = out
 	}
 
@@ -43,11 +41,11 @@ func execute(t Transformer, input string) (string, error) {
 	// apply transformatione for each match
 	for _, match := range t.Regex().FindAllStringSubmatchIndex(input, -1) {
 
-		// (1) append gap between input start OR previous match
+		// append gap between input start OR previous match
 		output += input[cursor:match[0]]
 		cursor = match[1]
 
-		// (2) build transformation arguments
+		// build transformation arguments
 		args := make([]string, 0, len(match)/2+1)
 		for i, l := 2, len(match); i < l; i += 2 {
 			// match exists (not both -1, nor negative length)
@@ -58,13 +56,13 @@ func execute(t Transformer, input string) (string, error) {
 			args = append(args, "")
 		}
 
-		// (3) execute transformation
+		// execute transformation
 		transformed, err := t.Transform(args...)
 		if err != nil {
 			return "", &TransformerError{t, err, input[match[0]:match[1]]}
 		}
 
-		// (4) apply transformation
+		// apply transformation
 		output += transformed
 
 	}
@@ -73,7 +71,5 @@ func execute(t Transformer, input string) (string, error) {
 	if cursor < len(input) {
 		output += input[cursor:]
 	}
-
-	// return final output
 	return output, nil
 }

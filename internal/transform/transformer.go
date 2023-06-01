@@ -4,6 +4,7 @@ import (
 	"regexp"
 )
 
+// Transformer defines a string transformer
 type Transformer interface {
 	// Regex returns the regex matching text to replace
 	Regex() *regexp.Regexp

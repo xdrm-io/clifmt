@@ -2,8 +2,9 @@ package color
 
 import (
 	"fmt"
-	"git.xdrm.io/go/clifmt/internal/color"
 	"regexp"
+
+	"github.com/xdrm-io/clifmt/internal/color"
 )
 
 var theme = color.DefaultTheme()

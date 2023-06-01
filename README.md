@@ -1,8 +1,8 @@
 # | extended terminal format |
 
-[![Go version](https://img.shields.io/badge/go_version-1.11-blue.svg)](https://golang.org/doc/go1.11)
-[![Go Report Card](https://goreportcard.com/badge/git.xdrm.io/go/clifmt)](https://goreportcard.com/report/git.xdrm.io/go/clifmt)
-[![Go doc](https://godoc.org/git.xdrm.io/go/clifmt?status.svg)](https://godoc.org/git.xdrm.io/go/clifmt)
+[![Go version](https://img.shields.io/badge/go_version-1.20-blue.svg)](https://golang.org/doc/go1.20)
+[![Go Report Card](https://goreportcard.com/badge/github.com/xdrm-io/clifmt)](https://goreportcard.com/report/github.com/xdrm-io/clifmt)
+[![Go doc](https://godoc.org/github.com/xdrm-io/clifmt?status.svg)](https://godoc.org/github.com/xdrm-io/clifmt)
 [![Build Status](https://drone.xdrm.io/api/badges/go/clifmt/status.svg)](https://drone.xdrm.io/go/clifmt)
 
 
@@ -10,19 +10,20 @@ Simple utility written in `go` that extends the standard `fmt.Sprintf` and `fmt.
 
 <!-- toc -->
 
-- [I. How to use](#i-how-to-use)
-  * [1) Requirements](#1-requirements)
-  * [2) Installation](#2-installation)
-  * [3) Usage](#3-usage)
-    + [a) As a library](#a-as-a-library)
-    + [b) As an executable](#b-as-an-executable)
-- [II. Format syntax](#ii-format-syntax)
-  * [1) Text style](#1-text-style)
-- [III. Animations](#iii-animations)
-- [IV. Screenshots](#iv-screenshots)
-    * [Colorizing format example :](#colorizing-format-example-)
-    * [Markdown-like format example](#markdown-like-format-example)
-- [V. Incoming features](#v-incoming-features)
+- [| extended terminal format |](#-extended-terminal-format-)
+	- [I. How to use](#i-how-to-use)
+		- [1) Requirements](#1-requirements)
+		- [2) Installation](#2-installation)
+		- [3) Usage](#3-usage)
+			- [a) As a library](#a-as-a-library)
+			- [b) As an executable](#b-as-an-executable)
+	- [II. Format syntax](#ii-format-syntax)
+		- [1) Text style](#1-text-style)
+	- [III. Animations](#iii-animations)
+	- [IV. Screenshots](#iv-screenshots)
+					- [Colorizing format example :](#colorizing-format-example-)
+					- [Markdown-like format example](#markdown-like-format-example)
+	- [V. Incoming features](#v-incoming-features)
 
 <!-- tocstop -->
 
@@ -43,10 +44,10 @@ The package **clifmt** can be used as a `go` library or as an executable. In eit
 Simply launch the following command in your favorite terminal
 
 ```bash
-$ go get -u git.xdrm.io/go/clifmt
+$ go get -u github.com/xdrm-io/clifmt
 ```
 
-> It will download the project sources into _`$GOPATH`/src/git.xdrm.io/go/clifmt_.
+> It will download the project sources into _`$GOPATH`/src/github.com/xdrm-io/clifmt_.
 
 
 
@@ -57,7 +58,7 @@ $ go get -u git.xdrm.io/go/clifmt
 You must import the library into your program with
 
 ```go
-import "git.xdrm.io/go/clifmt"
+import "github.com/xdrm-io/clifmt"
 ```
 
 
@@ -86,7 +87,7 @@ func Printpf(fmt string, args ...interface{}) (error)
 You must run from your terminal
 
 ```bash
-$ go get -u git.xdrm.io/go/clifmt/cmd/clifmt
+$ go get -u github.com/xdrm-io/clifmt/cmd/clifmt
 ```
 The  `clifmt` executable will be available in your $GOBIN directory.
 
@@ -147,7 +148,7 @@ The example below shows a simple progress bar using markdown-like syntax, colors
 package main
 
 import (
-	"git.xdrm.io/go/clifmt"
+	"github.com/xdrm-io/clifmt"
 	"time"
 )
 
