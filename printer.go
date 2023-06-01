@@ -65,3 +65,10 @@ func Printf(format string, a ...interface{}) error {
 	fmt.Print(s)
 	return nil
 }
+
+var escapeSequence = regexp.MustCompile(`\x1b\[\d+m`)
+
+// Escape remove escape sequences when terminal formatting/colors is not wanted
+func Escape(format string) string {
+	return escapeSequence.ReplaceAllString(format, "")
+}
